@@ -1,0 +1,22 @@
+package com.cos.photogramstart.handler.aop;
+
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
+
+@Component //RestContorller, Service 모든 것들이 Component를 상속해서 만들어져 있음.
+@Aspect
+public class ValidationAdivice {
+
+	// execution()안에는 접근제한자가 들어오게된다.(public,private,등)
+	@Around("execution(* com.cos.photogramstart.web.*Controller.*(..))") // 시작과 끝까지 간섭
+	public Object apiAdivice() {
+		
+	}
+	
+	@Around("execution(* com.cos.photogramstart.web.*Controller.*(..))") // 시작과 끝까지 간섭
+	public Object advice() {
+		
+	}
+	
+}

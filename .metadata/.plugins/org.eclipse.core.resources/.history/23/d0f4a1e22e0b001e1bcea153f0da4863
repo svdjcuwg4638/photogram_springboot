@@ -1,0 +1,26 @@
+package com.cos.photogramstart.handler.aop;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
+
+@Component //RestContorller, Service 모든 것들이 Component를 상속해서 만들어져 있음.
+@Aspect
+public class ValidationAdivice {
+
+	// execution()안에 처음은 접근제한자가 들어오게된다.(public,private,등)
+	// *로하면 모든 접근제한자 허용
+	@Around("execution(* com.cos.photogramstart.web.*Controller.*(..))") // 시작과 끝까지 간섭
+	// web.*Controller = webn의 모든Controller로 끝나는것
+	// *Controller.*(..) = 컨트롤러의 모든 메서드 (..)은 모든 파라미터의 값이 어떤것이든 하겠다는뜻.
+	public Object apiAdivice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
+		return proceedingJoinPoint.proceed();
+	}
+	
+	@Around("execution(* com.cos.photogramstart.web.*Controller.*(..))") // 시작과 끝까지 간섭
+	public Object advice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
+		return proceedingJoinPoint;
+	}
+	
+}

@@ -1,0 +1,26 @@
+package com.cos.photogramstart.domain.user.subscribe;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Builder 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Entity // 디비에 테이블 생성
+public class Subscribe {
+
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY) // 번호증가 전략이 데이터베이스를 따라간다
+		private int id;
+	
+}

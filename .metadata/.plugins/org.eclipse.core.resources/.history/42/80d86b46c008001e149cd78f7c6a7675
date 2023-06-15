@@ -1,0 +1,27 @@
+package com.cos.photogramstart.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.cos.photogramstart.domain.subscribe.SubscribeRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Service
+public class SubscribeService {
+
+	private final SubscribeRepository subscribeRepository;
+	
+	@Transactional
+	public int 구독하기(int fromUserId, int toUserId) {
+		int result = subscribeRepository.mSubscribe(fromUserId, toUserId);
+		return result;
+	}
+	
+	@Transactional
+	public int 구독취소하기(int fromUserId, int toUserId) {
+		int result = subscribeRepository.mUnSubscribe(fromUserId, toUserId);
+		return result;
+	}
+}

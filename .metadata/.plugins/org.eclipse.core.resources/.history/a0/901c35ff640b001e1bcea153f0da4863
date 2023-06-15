@@ -1,0 +1,80 @@
+package com.cos.photogramstart.config.auth;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import com.cos.photogramstart.domain.user.User;
+
+import lombok.Data;
+
+@Data
+public class PrincipalDetails implements UserDetails,OAuth2User{
+	
+	private static final long serialVersionUID = 1L;
+
+	private User user;
+	private Map<String, Object>  attributes;
+	
+	public PrincipalDetails(User user,Map<String, Object> attributes) {
+		this.user = user;
+	}
+	
+	// 권한 : 한개가 아닐 수 있음.(3개 이상의 권한)
+	@Override // 권한 확인 
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Collection<GrantedAuthority> collector = new ArrayList<>();
+		// arraylist의 부모가 Collection이라서 가능하다
+		collector.add(()-> {return user.getRole();});
+		
+		return collector;
+	}
+
+	@Override
+	public String getPassword() {
+		return user.getPassword();
+	}
+
+	@Override
+	public String getUsername() {
+		return user.getUsername();
+	}
+
+	@Override // 계정이 만료가 되었는지 판별
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override // 계정이 잠겼는지 판별
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override // 비밀번호가 만료되었는지
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override // 계정이 활성화 되어있는지
+	public boolean isEnabled() {
+		return true;
+	}
+
+	// OAuth2User에 의해 추가된 함수 2개
+	@Override
+	public Map<String, Object> getAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

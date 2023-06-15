@@ -1,0 +1,39 @@
+package com.cos.photogramstart.service;
+
+import java.nio.file.Path;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.cos.photogramstart.config.auth.PrincipalDetails;
+import com.cos.photogramstart.domain.image.ImageRepository;
+import com.cos.photogramstart.web.dto.image.ImageUploadDto;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Service
+public class ImageService {
+
+	private final ImageRepository imageRepository;
+	
+	@Value("${file.path}")
+	private String uploadForder;
+	
+	public void 사진업로드(ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
+		UUID uuid = UUID.randomUUID(); // uuid
+		String imageFileName= uuid +"_"+imageUploadDto.getFile().getOriginalFilename(); 
+		// 실제 파일 이름이 담기게 된다.
+		// 파일을 저장할때 똑같은 파일명이 들어오게 된다면 
+		// 똑같은 이름으로 또 들어와 원래있던 사진에 덮어 씌우게 된다
+		// 이를 방지하기 위해 UUID를 사용하자
+		// 하지만 UUID라도 랜덤으로 값을 뽑기때문에 같은 값을 뽑을 확률이 몇십억분의 일이지만
+		// 그것마저도 방지하기위해서 uuid뒤에 원래 이미지의 이름까지 더해주게된다.
+		// 그렇다면 99.9999999%는 위와 같은일이 없을것이다.
+		
+		Path imageFilePath = Path.get(uploadForder+imageFileName);
+		
+	}
+	
+}

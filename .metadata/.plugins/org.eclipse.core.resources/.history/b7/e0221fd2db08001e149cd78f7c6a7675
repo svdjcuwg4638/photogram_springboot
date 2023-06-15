@@ -1,0 +1,29 @@
+package com.cos.photogramstart.service;
+
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
+import com.cos.photogramstart.config.auth.PrincipalDetails;
+import com.cos.photogramstart.domain.image.ImageRepository;
+import com.cos.photogramstart.web.dto.image.ImageUploadDto;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Service
+public class ImageService {
+
+	private final ImageRepository imageRepository;
+	
+	public void 사진업로드(ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
+		UUID uuid = UUID.randomUUID(); // uuid
+		String imageFileName= imageUploadDto.getFile().getOriginalFilename(); 
+		// 실제 파일 이름이 담기게 된다.
+		// 파일을 저장할때 똑같은 파일명이 들어오게 된다면 
+		// 똑같은 이름으로 또 들어와 원래있던 사진에 덮어 씌우게 된다
+		// 이를 방지하기 위해 UUID를 사용하자
+		
+	}
+	
+}

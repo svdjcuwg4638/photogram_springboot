@@ -1,0 +1,25 @@
+package com.cos.photogramstart.service;
+
+import org.springframework.stereotype.Service;
+
+import com.cos.photogramstart.domain.likes.LikeRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Service
+public class LikeService {
+
+	private final LikeRepository likeRepository;
+
+	public void 좋아요(int imageId, int id) {
+		
+	}
+
+	public void 좋아요취소(int imageId, int id) {
+		
+	}
+	
+	
+	
+}

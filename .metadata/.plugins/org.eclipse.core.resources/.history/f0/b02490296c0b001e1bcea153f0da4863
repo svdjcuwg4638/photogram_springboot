@@ -1,0 +1,65 @@
+package com.cos.photogramstart.config.oauth;
+
+import java.util.Map;
+import java.util.UUID;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
+
+import com.cos.photogramstart.config.auth.PrincipalDetails;
+import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.domain.user.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Service
+public class OAuth2DetailsService extends DefaultOAuth2UserService{
+
+	private final UserRepository userRepository;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Override   	 			// 페이스북에서 받은 데이터
+	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+		
+		// 받은 데이터를 OAuth2User에 저장
+		OAuth2User oAuth2User = super.loadUser(userRequest);
+		
+//		System.out.println(oAuth2User.getAttributes()); // 어떤데이터가 담겨오는지 확인
+		
+		// 모든 데이터를 맵 형태로 value에는 모든데이터가 가능하게 Object로 받음
+		Map<String, Object> userinfo = oAuth2User.getAttributes();
+		
+		// 데이터를 받을땐 String로 다운캐스팅 해주자.
+		String username = "facebook_"+(String) userinfo.get("id");
+		// 사용하진 않을거지만 UUID를 이용해 암호를 넣어줌
+		String password = bCryptPasswordEncoder.encode(UUID.randomUUID().toString());
+		String email = (String) userinfo.get("email");
+		String name = (String) userinfo.get("name");
+		
+		// DB에서 데이터를 조회
+		User userEntity = userRepository.findByUsername(username);
+		
+		// 데이터가 없다면 build시켜줌
+		if(userEntity == null) { // 최초 로그인
+			User user = User.builder()
+					.username(username)
+					.password(password)
+					.name(name)
+					.email(email)
+					.role("ROLE_USER")
+					.build();
+			// 처음 페북로그인이라면 DB에저장후 세션에등록
+			return new PrincipalDetails(userRepository.save(user), oAuth2User.getAttributes());
+			
+			// 이미 페이스북으로 로그인한적이있어 DB에 username이 있다면 DB에 데이터를 넣지않고
+			// 바로 로그인 시켜주게된다.
+		}else { 
+			return new PrincipalDetails(userEntity, oAuth2User.getAttributes());
+		}
+	}
+}

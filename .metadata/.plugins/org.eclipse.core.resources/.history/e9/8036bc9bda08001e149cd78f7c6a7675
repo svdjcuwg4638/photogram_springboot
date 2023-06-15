@@ -1,0 +1,19 @@
+package com.cos.photogramstart.service;
+
+import org.springframework.stereotype.Service;
+
+import com.cos.photogramstart.domain.image.ImageRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Service
+public class ImageService {
+
+	private final ImageRepository;
+	
+	public void 사진업로드() {
+		
+	}
+	
+}

@@ -1,0 +1,49 @@
+package com.cos.photogramstart.domain.image;
+
+import java.time.LocalDateTime;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+
+import com.cos.photogramstart.domain.user.User;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Builder 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Entity 
+public class Image {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	private int id;
+	private String caption; // 사진글
+	private String postImageUrl; 
+	// 사진을 전송받아서 그 사진을 서버에 특정 폴더에 저장 - DB에는 그저장된 경로만 insert할것
+	
+	// 객채 자체를 DB에 저장할 경우 포린키로 저장된다.
+	@JoinColumn(name="userId")
+	@ManyToOne
+	private User user; // 한명의 유저는 여러이미지를 생성가능
+						// 이미지는 하나의 유저만 가질 수 있다.
+	// 이미지 좋아요
+	
+	// 이미지 댓글
+	
+	private LocalDateTime createDate;
+	// 항상 데이터베이스에는 시간이 중요하니 넣어줍니다.
+	@PrePersist 
+	public void createDate() {
+		this.createDate =  LocalDateTime.now();
+	}
+	
+}

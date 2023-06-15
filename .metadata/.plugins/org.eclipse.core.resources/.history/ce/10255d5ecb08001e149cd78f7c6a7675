@@ -1,0 +1,26 @@
+package com.cos.photogramstart.domain.image;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Builder 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Entity 
+public class Image {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	private int id;
+	private String caption; // 사진글
+	private String postImageUrl;
+	
+}
